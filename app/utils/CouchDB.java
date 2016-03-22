@@ -7,7 +7,7 @@ import play.Logger;
 
 import java.util.List;
 
-public class DGCouchDB {
+public class CouchDB {
 	
 	public static CouchDbClient dbClient;
 

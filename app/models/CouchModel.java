@@ -6,15 +6,15 @@ package models;
  */
 
 
-import utils.DGCouchDB;
+import utils.CouchDB;
 
 public class CouchModel {
 
     public void save(){
-        DGCouchDB.saveDocument(this);
+        CouchDB.saveDocument(this);
     }
 
     public static Object findByIdAndObjectClass(String id,Class klass) {
-        return DGCouchDB.find(klass,id);
+        return CouchDB.find(klass,id);
     }
 }

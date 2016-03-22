@@ -3,15 +3,13 @@ package models;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import controllers.Application;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import play.mvc.Result;
 import play.test.FakeApplication;
 import play.test.Helpers;
 import play.test.WithApplication;
-import utils.DGCouchDB;
+import utils.CouchDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +17,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static play.test.Helpers.*;
 
 
 /**
@@ -48,7 +45,7 @@ public class OwnersTest extends WithApplication {
         //////////////////////
         // Load CouchDB HERE
         //////////////////////
-        DGCouchDB.configureDB();
+        CouchDB.configureDB();
         //////////////////////////////////
         // Load DEVICE TYPE CACHED OBJECTS
         //////////////////////////////////

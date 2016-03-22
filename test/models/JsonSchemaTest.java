@@ -12,7 +12,7 @@ import play.Logger;
 import play.test.FakeApplication;
 import play.test.Helpers;
 import play.test.WithApplication;
-import utils.DGCouchDB;
+import utils.CouchDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class JsonSchemaTest extends WithApplication{
         //////////////////////
         // Load CouchDB HERE
         //////////////////////
-        DGCouchDB.configureDB();
+        CouchDB.configureDB();
         //////////////////////////////////
         // Load DEVICE TYPE CACHED OBJECTS
         //////////////////////////////////

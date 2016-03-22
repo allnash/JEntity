@@ -3,9 +3,8 @@ package models;
 import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.lightcouch.Attachment;
-import utils.DGCouchDB;
+import utils.CouchDB;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -220,7 +219,7 @@ public class JsonDocument extends CouchModel{
 
     public static String getDeviceData(String deviceId)
 	{
-		JsonDocument state = (JsonDocument) DGCouchDB.find(JsonDocument.class,deviceId);
+		JsonDocument state = (JsonDocument) CouchDB.find(JsonDocument.class,deviceId);
 		return null;
 
 	}

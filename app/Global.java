@@ -4,7 +4,7 @@ import models.JsonSchema;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
-import utils.DGCouchDB;
+import utils.CouchDB;
 
 public class Global extends GlobalSettings {
 
@@ -14,7 +14,7 @@ public class Global extends GlobalSettings {
 		//////////////////////
 		// Load CouchDB HERE
 		//////////////////////
-		DGCouchDB.configureDB();
+		CouchDB.configureDB();
 		//////////////////////////////////
 		// Load DEVICE TYPE CACHED OBJECTS
 		//////////////////////////////////
@@ -32,7 +32,7 @@ public class Global extends GlobalSettings {
 		//////////////////////
 		// Load CouchDB HERE
 		//////////////////////
-		DGCouchDB.releaseDB();
+		CouchDB.releaseDB();
 		Logger.info("Application shutdown...");
 	}
 
