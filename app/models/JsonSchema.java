@@ -8,8 +8,10 @@ import com.avaje.ebean.annotation.Index;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import play.Logger;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.ByteArrayInputStream;
@@ -59,13 +62,14 @@ public class JsonSchema extends BaseModel {
      * The string
      */
     @JsonIgnore
+    @Column(columnDefinition = "TEXT")
     public String string;
     /**
      *
-     * @param json_object
-     * The json_object
+     * @param schema
+     * The schema
      */
-    @JsonProperty("json_object")
+    @JsonProperty("schema")
     public transient JsonNode json_object;
 
     @JsonIgnore
@@ -75,18 +79,54 @@ public class JsonSchema extends BaseModel {
 
     }
 
-    public JsonSchema(String name, String data){
-        if(this.missingId())
-            this.id = generateId();
-        this.setRawSchema(data);
-        this.name = name;
-        this.string = data;
+    public JsonSchema(String data){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             this.json_object = objectMapper.readTree(data);
+            if(this.missingId())
+                this.id = generateId();
+            this.setRawSchema(data);
+            this.name = this.json_object.get("title").textValue();
+            this.string = data;
+            this.autoInjectFields();
+
         } catch (IOException e) {
             Logger.error(" Reading Json data - " + e.getLocalizedMessage());
             this.json_object = null;
+        }
+    }
+
+    private void autoInjectFields() {
+        JsonNode schema_properties = this.json_object.get("properties");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode stringNode = null;
+        try {
+            stringNode = objectMapper.readTree("{\"type\":\"string\"}");
+        } catch (IOException e) {
+            Logger.error("Error processing auto injected JSON schema fields - " + e.getMessage());
+        }
+
+        JSONObject jsonObject = new JSONObject();
+
+        if(schema_properties.get("id") == null)
+            ((ObjectNode)schema_properties).set("id", stringNode);
+        if(schema_properties.get("name") == null)
+            ((ObjectNode)schema_properties).set("name", stringNode);
+        if(schema_properties.get("owner_id") == null)
+            ((ObjectNode)schema_properties).set("owner_id", stringNode);
+        if(schema_properties.get("description") == null)
+            ((ObjectNode)schema_properties).set("description", stringNode);
+
+        this.setJson_object((JsonNode)((ObjectNode)this.json_object).set("properties", schema_properties));
+
+        try {
+
+            this.setString(objectMapper.writeValueAsString(this.json_object));
+            this.populateOtherFields();
+
+        } catch (JsonProcessingException e) {
+            Logger.error("Error processing auto injected JSON schema fields - " + e.getMessage());
         }
     }
 
@@ -148,7 +188,9 @@ public class JsonSchema extends BaseModel {
     public static JsonSchema findByName(String name) {
         JsonSchema type = JsonSchema.types.get(name);
         if(type == null){
-            return find.where().eq("name", name).findUnique();
+            JsonSchema schema = find.where().eq("name", name).findUnique();
+            schema.populateOtherFields();
+            return schema;
         } else {
             return type;
         }
@@ -163,9 +205,19 @@ public class JsonSchema extends BaseModel {
         this.schema_object = schema_object;
     }
 
+    private void populateOtherFields(){
+        this.setRawSchema(this.string);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            this.json_object = objectMapper.readTree(this.string);
+        } catch (IOException e) {
+            Logger.error(" Could not load JSON object - " + e.getLocalizedMessage());
+            this.json_object = null;
+        }
+    }
+
     public void setRawSchema(String rawSchemaString) {
         Schema schema = null;
-
         try {
             JSONObject rawSchema = new JSONObject(new JSONTokener(new ByteArrayInputStream(rawSchemaString.getBytes(StandardCharsets.UTF_8))));
             schema = SchemaLoader.load(rawSchema);

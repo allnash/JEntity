@@ -46,8 +46,8 @@ public class JsonDocument extends CouchModel{
 
     /**
      *
-     * @param content
-     * The content
+     * @param description
+     * The description
      */
     @JsonProperty("description")
     private String description;

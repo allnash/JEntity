@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.JsonDocument;
 import models.JsonSchema;
 import models.Owner;
+import org.everit.json.schema.ValidationException;
+import org.json.JSONObject;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.*;
@@ -38,7 +40,7 @@ public class Application extends Controller {
         JsonNode jsonSchema = jsonData.get(className);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            object = objectMapper.readValue(jsonSchema.toString(), JsonSchema.class);
+            object = new JsonSchema(jsonSchema.toString());
             object.save();
         } catch (NullPointerException e){
             return ControllerHelper.standardParseErrorResponse();
@@ -87,7 +89,7 @@ public class Application extends Controller {
 
         if(myOwner != null){
             JsonNode jsonData = request().body().asJson();
-            String className = ControllerHelper.jsonKeyNameForClass(controllerClass);
+            String className = "device";
             JsonNode jsonDevice = jsonData.get(className);
             return createDevice(myOwner,jsonDevice);
         }  else {
@@ -107,7 +109,14 @@ public class Application extends Controller {
     {
         ObjectNode result = Json.newObject();
         JsonDocument object;
-        String className = ControllerHelper.jsonKeyNameForClass(controllerClass);
+        String className = "device";
+        try
+        {
+            JsonSchema j = JsonSchema.findByName("device");
+            j.schema_object.validate((new JSONObject("{\"id\":\"1234\",\"power_on\":\"ON\",\"meter_reading\":10}")));
+        }  catch (ValidationException e){
+            Logger.info("Error validating  - " + className + " "  + e.getMessage());
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             object = objectMapper.readValue(jsonDevice.toString(), controllerClass);

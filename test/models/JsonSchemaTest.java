@@ -62,7 +62,7 @@ public class JsonSchemaTest extends WithApplication{
 
     @Test
     public void createJSchema() {
-        JsonSchema j = new JsonSchema("test","{\"title\":\"Example Schema\",\"type\":\"object\",\"properties\":{\"firstName\":{\"type\":\"string\"},\"lastName\":{\"type\":\"string\"},\"age\":{\"description\":\"Age in years\",\"type\":\"integer\",\"minimum\":0}},\"required\":[\"firstName\",\"lastName\"]}");
+        JsonSchema j = new JsonSchema("{\"title\":\"Example Schema\",\"type\":\"object\",\"properties\":{\"firstName\":{\"type\":\"string\"},\"lastName\":{\"type\":\"string\"},\"age\":{\"description\":\"Age in years\",\"type\":\"integer\",\"minimum\":0}},\"required\":[\"firstName\",\"lastName\"]}");
         j.save();
         try
         {
@@ -83,7 +83,7 @@ public class JsonSchemaTest extends WithApplication{
     @Test
     public void createDeviceSchema() {
         Logger.info("Creating Device Schema");
-        JsonSchema j = new JsonSchema("device","{\"title\":\"device\",\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"power_on\":{\"type\":\"string\"},\"meter_reading\":{\"description\":\"Meter Reading for Water\",\"type\":\"integer\",\"minimum\":0}},\"required\":[\"id\",\"power_on\"]}");
+        JsonSchema j = new JsonSchema("{\"title\":\"device\",\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"power_on\":{\"type\":\"string\"},\"meter_reading\":{\"description\":\"Meter Reading for Water\",\"type\":\"integer\",\"minimum\":0}},\"required\":[\"id\",\"power_on\"]}");
         j.save();
         try
         {
