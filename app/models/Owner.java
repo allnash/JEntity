@@ -101,8 +101,13 @@ public class Owner extends BaseModel {
         if(this.missingId())
             this.generateOwnerId();
         this.enabled = 1;
-        super.save();
-        Logger.info("Owner - " + this.getId() + " : Saved!");
+		if(Owner.findByExternalId(this.external_id) == null)
+        {
+            Logger.info("Owner - " + this.getId() + " : Saved!");
+            super.save();
+        } else {
+            Logger.error("Owner - " + this.getId() + " : Duplicate External ID!");
+        }
     }
 
     public String getExternal_id() {

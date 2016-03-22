@@ -1,8 +1,12 @@
 package models;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.lightcouch.Attachment;
+import play.api.libs.json.Json;
 import utils.CouchDB;
 
 import java.util.*;
@@ -116,17 +120,6 @@ public class JsonDocument extends CouchModel{
 
 	public JsonDocument(String _id) {
 		this._id = _id;
-	}
-
-	public JsonDocument(String _id, String name) {
-		this._id = _id;
-		this.name = name;
-	}
-
-	public JsonDocument(String _id, String name, String description) {
-		this._id = _id;
-		this.name = name;
-        this.description = description;
 	}
 
     public static JsonDocument findById(String s) {
@@ -288,6 +281,32 @@ public class JsonDocument extends CouchModel{
 
     public void setDeleted_at(Long deleted_at) {
         this.deleted_at = deleted_at;
+    }
+
+	public static JsonDocument saveJson(JsonNode jsonNode,Owner myOwner) throws Exception{
+        JsonDocument d = new JsonDocument();
+        d.setEnabled(1);
+        d.setOwner_id(myOwner.getId());
+        if(jsonNode.get("id") != null)
+            throw new Exception("ID should not be set");
+        if(jsonNode.get("name") != null)
+            d.setName(jsonNode.get("name").textValue());
+        if(jsonNode.get("description") != null)
+            d.setDescription(jsonNode.get("description").textValue());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String textValue = objectMapper.writeValueAsString(jsonNode);
+        Map<String, Object> data = objectMapper.readValue(textValue, new TypeReference<Map<String, String>>(){});
+        d.setData(data);
+        d.save();
+        return d;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public static class RevInfo {

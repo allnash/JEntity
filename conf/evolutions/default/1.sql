@@ -5,8 +5,8 @@
 
 create table json_schema (
   id                            varchar(255) not null,
-  name                          varchar(255),
-  string                        varchar(255),
+  title                         varchar(255),
+  string                        TEXT,
   version                       bigint not null,
   created_at                    timestamp not null,
   updated_at                    timestamp not null,
@@ -23,7 +23,7 @@ create table owner (
   constraint pk_owner primary key (id)
 );
 
-create index ix_json_schema_name on json_schema (name);
+create index ix_json_schema_title on json_schema (title);
 create index ix_owner_external_id on owner (external_id);
 
 # --- !Downs
@@ -32,5 +32,5 @@ drop table if exists json_schema;
 
 drop table if exists owner;
 
-drop index if exists ix_json_schema_name;
+drop index if exists ix_json_schema_title;
 drop index if exists ix_owner_external_id;

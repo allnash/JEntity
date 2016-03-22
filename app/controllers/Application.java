@@ -35,15 +35,23 @@ public class Application extends Controller {
         JsonNode jsonData = request().body().asJson();
         ObjectNode result = Json.newObject();
         JsonSchema object;
-        String className = ControllerHelper.jsonKeyNameForClass(JsonSchema.class);
-
-        JsonNode jsonSchema = jsonData.get(className);
         ObjectMapper objectMapper = new ObjectMapper();
+        String className = ControllerHelper.jsonKeyNameForClass(JsonSchema.class);
+        JsonNode jsonSchema = jsonData.get(className);
         try {
             object = new JsonSchema(jsonSchema.toString());
-            object.save();
-        } catch (NullPointerException e){
-            return ControllerHelper.standardParseErrorResponse();
+            JsonSchema exitingSchema = JsonSchema.findByTitle(object.title);
+            if(exitingSchema != null){
+                exitingSchema.setString(objectMapper.writeValueAsString(jsonSchema));
+                exitingSchema.save();
+
+            } else {
+                object.save();
+            }
+            JsonSchema.reload();
+
+        }catch (NullPointerException e){
+            return ControllerHelper.standardNullPointerErrorResponse();
         } catch (Exception e){
             return ControllerHelper.standardParseErrorResponse();
         }
@@ -77,7 +85,7 @@ public class Application extends Controller {
             JsonNode jsonData = request().body().asJson();
             String className = ControllerHelper.jsonKeyNameForClass(controllerClass);
             JsonNode jsonDevice = jsonData.get(className);
-            return createDevice(myOwner,jsonDevice);
+            return createDevice(myOwner,jsonDevice,myOwner);
         }  else {
             return ControllerHelper.standardDataValidationErrorResponse();
         }
@@ -91,7 +99,7 @@ public class Application extends Controller {
             JsonNode jsonData = request().body().asJson();
             String className = "device";
             JsonNode jsonDevice = jsonData.get(className);
-            return createDevice(myOwner,jsonDevice);
+            return createDevice(myOwner,jsonDevice,myOwner);
         }  else {
             return ControllerHelper.standardDataValidationErrorResponse();
         }
@@ -105,30 +113,28 @@ public class Application extends Controller {
         return requestOwner;
     }
 
-    private Result createDevice(Owner ownerObject, JsonNode jsonDevice)
+    private Result createDevice(Owner ownerObject, JsonNode jsonDevice,Owner myOwner)
     {
         ObjectNode result = Json.newObject();
+        ObjectMapper objectMapper = new ObjectMapper();
         JsonDocument object;
         String className = "device";
         try
         {
-            JsonSchema j = JsonSchema.findByName("device");
-            j.schema_object.validate((new JSONObject("{\"id\":\"1234\",\"power_on\":\"ON\",\"meter_reading\":10}")));
+            JsonSchema j = JsonSchema.findByTitle("device");
+            j.schema_object.validate((new JSONObject(objectMapper.writeValueAsString(jsonDevice))));
+
         }  catch (ValidationException e){
             Logger.info("Error validating  - " + className + " "  + e.getMessage());
+        } catch (JsonProcessingException e) {
+            Logger.info("Error Parsing  - " + className + " "  + e.getMessage());
         }
-        ObjectMapper objectMapper = new ObjectMapper();
+
         try {
-            object = objectMapper.readValue(jsonDevice.toString(), controllerClass);
-            if(ownerObject != null) object.setOwner_id(ownerObject.id);
-            object.save();
+            object = JsonDocument.saveJson(jsonDevice,myOwner);
         } catch (NullPointerException e){
             return ControllerHelper.standardParseErrorResponse();
         } catch (Exception e){
-            return ControllerHelper.standardParseErrorResponse();
-        }
-
-        if(object == null){
             return ControllerHelper.standardParseErrorResponse();
         }
 

@@ -45,17 +45,17 @@ public class JsonSchema extends BaseModel {
      * @param id
      * The id
      */
-
     @JsonProperty("id")
     public String id;
+
     /**
      *
-     * @param name
-     * The name
+     * @param title
+     * The title
      */
-    @JsonProperty("name")
+    @JsonIgnore
     @Index
-    public String name;
+    public String title;
     /**
      *
      * @param string
@@ -64,6 +64,7 @@ public class JsonSchema extends BaseModel {
     @JsonIgnore
     @Column(columnDefinition = "TEXT")
     public String string;
+
     /**
      *
      * @param schema
@@ -86,7 +87,7 @@ public class JsonSchema extends BaseModel {
             if(this.missingId())
                 this.id = generateId();
             this.setRawSchema(data);
-            this.name = this.json_object.get("title").textValue();
+            this.title = this.json_object.get("title").textValue();
             this.string = data;
             this.autoInjectFields();
 
@@ -145,8 +146,12 @@ public class JsonSchema extends BaseModel {
     public void save(){
         if(this.missingId())
             this.generateOwnerId();
-        this.setRawSchema(json_object.toString());
-        this.setString(json_object.toString());
+        if(this.json_object != null){
+            this.setRawSchema(json_object.toString());
+            this.setString(json_object.toString());
+        } else if(this.string != null){
+            this.setRawSchema(this.string);
+        }
         super.save();
         Logger.info("Json Schema - " + this.getId() + " : Saved!");
     }
@@ -169,8 +174,8 @@ public class JsonSchema extends BaseModel {
         if(find.all() != null){
 
             for (JsonSchema j: find.all()) {
-                Logger.info("Reading Schema  - id:" + j.getId() + " name:" + j.getName());
-                types.put(j.getName(), j);
+                Logger.info("Reading Schema  - id:" + j.getId() + " title:" + j.getTitle());
+                types.put(j.getTitle(), j);
             }
 
             if(types.size() > 0){
@@ -185,15 +190,16 @@ public class JsonSchema extends BaseModel {
 
     }
 
-    public static JsonSchema findByName(String name) {
-        JsonSchema type = JsonSchema.types.get(name);
+    public static JsonSchema findByTitle(String title) {
+        JsonSchema type = JsonSchema.types.get(title);
         if(type == null){
-            JsonSchema schema = find.where().eq("name", name).findUnique();
-            schema.populateOtherFields();
-            return schema;
-        } else {
+            type = find.where().eq("title", title).findUnique();
+            if(type == null)
+                return null;
+            else
+                type.populateOtherFields();
             return type;
-        }
+        } else return type;
     }
 
     public Schema getSchema_object() {
@@ -236,14 +242,6 @@ public class JsonSchema extends BaseModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getString() {
         ObjectMapper objectMapper = new ObjectMapper();
         if(string == null)
@@ -277,4 +275,11 @@ public class JsonSchema extends BaseModel {
         this.json_object = json_object;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

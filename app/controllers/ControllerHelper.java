@@ -26,6 +26,14 @@ public class ControllerHelper {
         return badRequest(result);
     }
 
+
+    public static Result standardNullPointerErrorResponse(){
+        ObjectNode result = Json.newObject();
+        result.put("status", "error");
+        result.put("error", "object was not saved properly");
+        return badRequest(result);
+    }
+
     public static Result standardDataValidationErrorResponse(){
         ObjectNode result = Json.newObject();
         result.put("status", "error");
