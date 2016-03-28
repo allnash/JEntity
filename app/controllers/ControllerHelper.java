@@ -41,4 +41,11 @@ public class ControllerHelper {
         return badRequest(result);
     }
 
+    public static Result standardInvalidOwnerErrorResponse(){
+        ObjectNode result = Json.newObject();
+        result.put("status", "error");
+        result.put("error", "invalid owner");
+        return badRequest(result);
+    }
+
 }

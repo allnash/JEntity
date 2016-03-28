@@ -61,7 +61,6 @@ public class JsonDocument extends CouchModel{
      * @param data
      * The data
      */
-    @JsonProperty("data")
     private Map<String, Object> data = new HashMap<String, Object>();
 
     /**

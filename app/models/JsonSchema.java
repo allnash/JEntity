@@ -175,6 +175,7 @@ public class JsonSchema extends BaseModel {
 
             for (JsonSchema j: find.all()) {
                 Logger.info("Reading Schema  - id:" + j.getId() + " title:" + j.getTitle());
+                j.populateOtherFields();
                 types.put(j.getTitle(), j);
             }
 

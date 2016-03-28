@@ -87,7 +87,7 @@ public class Application extends Controller {
             JsonNode jsonDevice = jsonData.get(className);
             return createDevice(myOwner,jsonDevice,myOwner);
         }  else {
-            return ControllerHelper.standardDataValidationErrorResponse();
+            return ControllerHelper.standardInvalidOwnerErrorResponse();
         }
     }
 
@@ -101,7 +101,7 @@ public class Application extends Controller {
             JsonNode jsonDevice = jsonData.get(className);
             return createDevice(myOwner,jsonDevice,myOwner);
         }  else {
-            return ControllerHelper.standardDataValidationErrorResponse();
+            return ControllerHelper.standardInvalidOwnerErrorResponse();
         }
     }
 
@@ -140,8 +140,7 @@ public class Application extends Controller {
 
         try {
             String json = objectMapper.writeValueAsString(object);
-            JsonNode jsonNode = objectMapper.readTree(json);
-            result.set(ControllerHelper.jsonKeyNameForClass(controllerClass),jsonNode);
+            result.set("device",Json.parse(json));
         } catch (JsonProcessingException e) {
             Logger.error(e.getMessage());
             return ControllerHelper.standardParseErrorResponse();
