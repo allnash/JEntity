@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.lightcouch.Attachment;
-import play.api.libs.json.Json;
 import utils.CouchDB;
 
 import java.util.*;
@@ -14,7 +13,13 @@ import java.util.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonDocument extends CouchModel{
 
-	private final String Type = "";
+    /**
+     *
+     * @param Type
+     * The Type
+     */
+    @JsonIgnore
+	private String Type = "";
 
     /**
      *
@@ -121,24 +126,6 @@ public class JsonDocument extends CouchModel{
 		this._id = _id;
 	}
 
-    public static JsonDocument findById(String s) {
-        return (JsonDocument) CouchModel.findByIdAndObjectClass(s, JsonDocument.class);
-    }
-
-    public void save(){
-
-        if(this._id == null){
-            this.set_id(UUID.randomUUID().toString());
-        }
-
-        if(this.created_at == null){
-            this.created_at = System.currentTimeMillis() / 1000L;
-        }
-
-        this.modified_at = System.currentTimeMillis() / 1000L;
-        super.save();
-    }
-
     public String get_id() {
 		return _id;
 	}
@@ -202,12 +189,6 @@ public class JsonDocument extends CouchModel{
 	public void set_revs_info(List<RevInfo> _revs_info) {
 		this._revs_info = _revs_info;
 	}
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     public static String getDeviceData(String deviceId)
 	{
@@ -282,30 +263,19 @@ public class JsonDocument extends CouchModel{
         this.deleted_at = deleted_at;
     }
 
-	public static JsonDocument saveJson(JsonNode jsonNode,Owner myOwner) throws Exception{
-        JsonDocument d = new JsonDocument();
-        d.setEnabled(1);
-        d.setOwner_id(myOwner.getId());
-        if(jsonNode.get("id") != null)
-            throw new Exception("ID should not be set");
-        if(jsonNode.get("name") != null)
-            d.setName(jsonNode.get("name").textValue());
-        if(jsonNode.get("description") != null)
-            d.setDescription(jsonNode.get("description").textValue());
-        ObjectMapper objectMapper = new ObjectMapper();
-        String textValue = objectMapper.writeValueAsString(jsonNode);
-        Map<String, Object> data = objectMapper.readValue(textValue, new TypeReference<Map<String, String>>(){});
-        d.setData(data);
-        d.save();
-        return d;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setType(String type) { this.Type = type; }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 
     public static class RevInfo {
@@ -333,5 +303,23 @@ public class JsonDocument extends CouchModel{
 			return "RevInfo [rev=" + rev + ", status=" + status + "]";
 		}
 	} // end RevInfo
+
+    public static JsonDocument findById(String s) {
+        return (JsonDocument) CouchModel.findByIdAndObjectClass(s, JsonDocument.class);
+    }
+
+    public void save(){
+
+        if(this._id == null){
+            this.set_id(UUID.randomUUID().toString());
+        }
+
+        if(this.created_at == null){
+            this.created_at = System.currentTimeMillis() / 1000L;
+        }
+
+        this.modified_at = System.currentTimeMillis() / 1000L;
+        super.save();
+    }
 
 } // end Foo

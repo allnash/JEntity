@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import factory.DeviceDocumentFactory;
 import models.JsonDocument;
 import models.JsonSchema;
 import models.Owner;
@@ -131,7 +132,7 @@ public class Application extends Controller {
         }
 
         try {
-            object = JsonDocument.saveJson(jsonDevice,myOwner);
+            object = DeviceDocumentFactory.createDeviceDocument(jsonDevice,myOwner,JsonSchema.findByTitle("device"));
         } catch (NullPointerException e){
             return ControllerHelper.standardParseErrorResponse();
         } catch (Exception e){
