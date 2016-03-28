@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -42,13 +40,6 @@ public class OwnersTest extends WithApplication {
     @Before
     public void setUp(){
         Config conf = ConfigFactory.load();
-        //////////////////////
-        // Load CouchDB HERE
-        //////////////////////
-        CouchDB.configureDB();
-        //////////////////////////////////
-        // Load DEVICE TYPE CACHED OBJECTS
-        //////////////////////////////////
         JsonSchema.reload();
     }
 

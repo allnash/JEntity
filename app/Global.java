@@ -5,6 +5,7 @@ import play.Application;
 import play.GlobalSettings;
 import play.Logger;
 import utils.CouchDB;
+import utils.Seeds;
 
 public class Global extends GlobalSettings {
 
@@ -16,14 +17,11 @@ public class Global extends GlobalSettings {
 		//////////////////////
 		CouchDB.configureDB();
 		//////////////////////////////////
-		// Load DEVICE TYPE CACHED OBJECTS
+		// Load CACHED OBJECTS
 		//////////////////////////////////
-		JsonSchema.reload();
-		//////////////////////////////////
-		// Load  HARDWARE   CACHED OBJECTS
-		//////////////////////////////////
-
-		
+        JsonSchema.reload();
+        Seeds.loadDefaultSchemas();
+        // Application start after this.
 		Logger.info("Application has started");
 
     }

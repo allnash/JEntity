@@ -14,7 +14,10 @@ POST     /owners                                                          contro
 # Devices Mapping
 POST     /owners/:ownerId/devices                                         controllers.Application.createDeviceWithOwner(ownerId: String)
 POST     /external/owners/:ownerId/devices                                controllers.Application.createDeviceWithExternalOwner(ownerId: String)
-#GET     /owners/:ownerId/devices/:deviceId                               controllers.Application.getByOwnerIdDeviceId(ownerId: String, deviceId: String)
+
+GET      /owners/:ownerId/devices/:deviceId                               controllers.Application.getByOwnerIdDeviceId(ownerId: String, deviceId: String)
+GET      /external/owners/:ownerId/devices/:deviceId                      controllers.Application.getByExternalOwnerIdDeviceId(ownerId: String, deviceId: String)
+
 #GET     /owners/:ownerId/devices                                         controllers.Application.getAllByOwnerId(ownerId: String)
 #PUT     /owners/:ownerId/devices/:deviceId                               controllers.Application.updateByOwnerIdDeviceId(ownerId: String, deviceId: String)
 

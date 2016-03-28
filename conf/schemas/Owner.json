@@ -1,0 +1,17 @@
+{
+  "title": "owner",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "device_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    }
+  }
+}

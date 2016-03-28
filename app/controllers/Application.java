@@ -62,7 +62,6 @@ public class Application extends Controller {
         }
 
         try {
-            //objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
             String json = objectMapper.writeValueAsString(object);
             JsonNode jsonNode = objectMapper.readTree(json);
             result.set(ControllerHelper.jsonKeyNameForClass(JsonSchema.class),jsonNode);
@@ -90,6 +89,30 @@ public class Application extends Controller {
         }  else {
             return ControllerHelper.standardInvalidOwnerErrorResponse();
         }
+    }
+
+    public Result getByOwnerIdDeviceId(String ownerId,String deviceId)
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode result = Json.newObject();
+        String json = null;
+        try {
+            Owner myOwner = isValidOwnerId(ownerId);
+            if(myOwner == null)
+                return ControllerHelper.standardInvalidOwnerErrorResponse();
+            json = objectMapper.writeValueAsString(JsonDocument.find(JsonDocument.class,deviceId));
+        } catch (JsonProcessingException e) {
+            Logger.error(e.getMessage());
+            return ControllerHelper.standardParseErrorResponse();
+        }
+        result.set("device",Json.parse(json));
+        result.put("status","ok");
+        return ok(result);
+    }
+
+    public Result getByExternalOwnerIdDeviceId(String ownerId,String deviceId)
+    {
+       return getByOwnerIdDeviceId(ownerId,deviceId);
     }
 
     @BodyParser.Of(BodyParser.Json.class)

@@ -1,0 +1,39 @@
+{
+  "title": "device",
+  "type": "object",
+  "properties":
+  {
+    "id":
+    {
+      "type": "string"
+    },
+    "power_on":
+    {
+      "type": "string"
+    },
+    "meter_reading":
+    {
+      "description": "Meter Reading for Water",
+      "type": "integer",
+      "minimum": 0
+    },
+    "name":
+    {
+      "type": "string"
+    },
+    "owner_id":
+    {
+      "type": "string"
+    },
+    "description":
+    {
+      "type": "string"
+    }
+  },
+  "required":
+  [
+    "id",
+    "power_on"
+  ]
+}
+

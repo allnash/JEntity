@@ -82,7 +82,6 @@ public class CouchDB {
 	public void ensureFullCommit() {
 		dbClient.context().ensureFullCommit();
 	}
-
 	
 	public void uuids() {
 		List<String> uuids = dbClient.context().uuids(10);
