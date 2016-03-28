@@ -1,9 +1,6 @@
 package models;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.lightcouch.Attachment;
 import utils.CouchDB;
@@ -13,13 +10,15 @@ import java.util.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonDocument extends CouchModel{
 
-    /**
-     *
-     * @param Type
-     * The Type
-     */
-    @JsonIgnore
-	private String Type = "";
+	@SuppressWarnings("unused")
+	private final String Type = "JsonDocument";
+
+	/**
+	* @param object_type
+	* The object_type
+	*/
+	@JsonIgnore
+	private String object_type = "";
 
     /**
      *
@@ -197,10 +196,6 @@ public class JsonDocument extends CouchModel{
 
 	}
 
-	public String getType() {
-		return Type;
-	}
-
     public String getOwner_id() { return this.owner_id; }
 
     public void setOwner_id(String owner_id) { this.owner_id = owner_id; }
@@ -271,7 +266,9 @@ public class JsonDocument extends CouchModel{
         this.description = description;
     }
 
-    public void setType(String type) { this.Type = type; }
+    public String getObject_type() { return object_type; }
+
+    public void setObject_type(String object_type) { this.object_type = object_type; }
 
     @Override
     public String toString() {

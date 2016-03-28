@@ -26,6 +26,12 @@ public class ControllerHelper {
         return badRequest(result);
     }
 
+    public static Result standardDuplicateIDErrorResponse(){
+        ObjectNode result = Json.newObject();
+        result.put("status", "error");
+        result.put("error", "Duplicate External ID");
+        return badRequest(result);
+    }
 
     public static Result standardNullPointerErrorResponse(){
         ObjectNode result = Json.newObject();

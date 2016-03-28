@@ -171,7 +171,12 @@ public class Application extends Controller {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             object = objectMapper.readValue(jsonOwner.toString(),  Owner.class);
-            object.save();
+            Owner duplicateOwner = isValidOwnerId(object.getExternal_id());
+            if(duplicateOwner == null){
+                object.save();
+            } else {
+                return ControllerHelper.standardDuplicateIDErrorResponse();
+            }
         } catch (NullPointerException e){
             return ControllerHelper.standardParseErrorResponse();
         } catch (Exception e){
