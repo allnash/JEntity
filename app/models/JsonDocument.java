@@ -3,7 +3,6 @@ package models;
 import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.lightcouch.Attachment;
-import utils.CouchDB;
 
 import java.util.*;
 
@@ -314,7 +313,6 @@ public class JsonDocument extends CouchModel{
         if(this.created_at == null){
             this.created_at = System.currentTimeMillis() / 1000L;
         }
-
 
 		if(this._rev == null){
             this.modified_at = System.currentTimeMillis() / 1000L;

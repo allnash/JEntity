@@ -10,7 +10,6 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.lightcouch.*;
 import play.Logger;
-import utils.CouchDB;
 
 import java.util.List;
 
@@ -114,6 +113,6 @@ public class CouchModel {
     }
 
     public static Object findByIdAndObjectClass(String id,Class klass) {
-        return CouchDB.find(klass,id);
+        return JsonDocument.find(klass,id);
     }
 }

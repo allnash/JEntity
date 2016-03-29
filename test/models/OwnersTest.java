@@ -9,7 +9,6 @@ import org.junit.Test;
 import play.test.FakeApplication;
 import play.test.Helpers;
 import play.test.WithApplication;
-import utils.CouchDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;

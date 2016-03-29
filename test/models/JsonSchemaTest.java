@@ -12,7 +12,6 @@ import play.Logger;
 import play.test.FakeApplication;
 import play.test.Helpers;
 import play.test.WithApplication;
-import utils.CouchDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,13 +43,6 @@ public class JsonSchemaTest extends WithApplication{
     @Before
     public void setUp(){
         Config conf = ConfigFactory.load();
-        //////////////////////
-        // Load CouchDB HERE
-        //////////////////////
-        CouchDB.configureDB();
-        //////////////////////////////////
-        // Load DEVICE TYPE CACHED OBJECTS
-        //////////////////////////////////
         JsonSchema.reload();
     }
 
