@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.CaseFormat;
+import models.Owner;
 import play.libs.Json;
 import play.mvc.Result;
 
@@ -12,6 +13,14 @@ import static play.mvc.Results.ok;
  * Created by ngadre on 2/26/16.
  */
 public class ControllerHelper {
+
+    public static Owner isValidOwnerId(String ownerId){
+        Owner requestOwner = Owner.findById(ownerId);
+        if(requestOwner == null){
+            requestOwner = Owner.findByExternalId(ownerId);
+        }
+        return requestOwner;
+    }
 
     public static String jsonKeyNameForClass(Class c){
         String className = c.getSimpleName();

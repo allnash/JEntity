@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import factory.DeviceDocumentFactory;
+import factory.OwnerDocumentFactory;
 import models.JsonDocument;
 import models.JsonSchema;
 import models.Owner;
+import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.json.JSONObject;
 import play.Logger;
@@ -79,7 +81,7 @@ public class Application extends Controller {
     @BodyParser.Of(BodyParser.Json.class)
     public Result createDeviceWithOwner(String ownerId)
     {
-        Owner myOwner = isValidOwnerId(ownerId);
+        Owner myOwner = ControllerHelper.isValidOwnerId(ownerId);
 
         if(myOwner != null){
             JsonNode jsonData = request().body().asJson();
@@ -97,7 +99,7 @@ public class Application extends Controller {
         ObjectNode result = Json.newObject();
         String json = null;
         try {
-            Owner myOwner = isValidOwnerId(ownerId);
+            Owner myOwner = ControllerHelper.isValidOwnerId(ownerId);
             if(myOwner == null)
                 return ControllerHelper.standardInvalidOwnerErrorResponse();
             json = objectMapper.writeValueAsString(JsonDocument.find(JsonDocument.class,deviceId));
@@ -117,7 +119,7 @@ public class Application extends Controller {
 
     @BodyParser.Of(BodyParser.Json.class)
     public Result createDeviceWithExternalOwner(String ownerId) {
-        Owner myOwner = isValidOwnerId(ownerId);
+        Owner myOwner = ControllerHelper.isValidOwnerId(ownerId);
 
         if(myOwner != null){
             JsonNode jsonData = request().body().asJson();
@@ -127,14 +129,6 @@ public class Application extends Controller {
         }  else {
             return ControllerHelper.standardInvalidOwnerErrorResponse();
         }
-    }
-
-    private Owner isValidOwnerId(String ownerId){
-        Owner requestOwner = Owner.findById(ownerId);
-        if(requestOwner == null){
-            requestOwner = Owner.findByExternalId(ownerId);
-        }
-        return requestOwner;
     }
 
     private Result createDevice(Owner ownerObject, JsonNode jsonDevice,Owner myOwner)
@@ -194,7 +188,7 @@ public class Application extends Controller {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             object = objectMapper.readValue(jsonOwner.toString(),  Owner.class);
-            Owner duplicateOwner = isValidOwnerId(object.getExternal_id());
+            Owner duplicateOwner = ControllerHelper.isValidOwnerId(object.getExternal_id());
             if(duplicateOwner == null){
                 object.save();
             } else {
@@ -213,6 +207,8 @@ public class Application extends Controller {
         try {
             String json = objectMapper.writeValueAsString(object);
             JsonNode jsonNode = objectMapper.readTree(json);
+            JsonSchema j = JsonSchema.findByTitle("owner");
+            OwnerDocumentFactory.createOwnerDocument(object,j);
             result.set(ControllerHelper.jsonKeyNameForClass( Owner.class),jsonNode);
         } catch (JsonProcessingException e) {
             return ControllerHelper.standardParseErrorResponse();

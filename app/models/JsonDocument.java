@@ -315,8 +315,15 @@ public class JsonDocument extends CouchModel{
             this.created_at = System.currentTimeMillis() / 1000L;
         }
 
-        this.modified_at = System.currentTimeMillis() / 1000L;
-        super.save();
+
+		if(this._rev == null){
+            this.modified_at = System.currentTimeMillis() / 1000L;
+            super.save();
+
+        } else {
+            super.updateDocument(this);
+        }
+
     }
 
 } // end Foo

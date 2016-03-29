@@ -8,6 +8,8 @@ import models.JsonSchema;
 import models.Owner;
 import play.api.libs.json.Json;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +34,20 @@ public class DeviceDocumentFactory {
         Map<String, Object> data = objectMapper.readValue(textValue, new TypeReference<Map<String, String>>(){});
         d.setData(data);
         d.save();
+        addDeviceToOwner(myOwner,d.get_id());
         return d;
+    }
+
+    private static void addDeviceToOwner(Owner myOwner,String deviceId){
+        JsonDocument ownerDocument = JsonDocument.findById(myOwner.getId());
+        Map<String,Object> ownerData = ownerDocument.getData();
+        List<String> device_ids = (List<String>) ownerData.get("device_ids");
+        if(device_ids == null)
+            device_ids = new ArrayList<>();
+        device_ids.add(deviceId);
+        ownerData.put("device_ids",device_ids);
+        ownerDocument.setData(ownerData);
+        ownerDocument.save();
     }
 
     public static JsonDocument updateDeviceDocument(String deviceDocumentId,JsonNode jsonNode, Owner myOwner, JsonSchema schema) throws Exception{
