@@ -51,9 +51,13 @@ Hit the Web console
 For the first HTTP request it will pop up a red screen and ask you to run a SQL script and migrate the database.
 Don't worry, this will set up your database and seed it will all accounts, messages, notification, etc etc.   
 
-# Add Some Schemas
+# Add an Owner For Data and Schemas
+	
+	curl -X POST -H "Content-Type: application/json" -d '{"owner":{"external_id":"test"}}' http://localhost:9000/owners
+	
 	curl -X POST -H "Content-Type: application/json" -d '{"json_schema":{"title":"device","type":"object","properties":{"id":{"type":"string"},"power_on":{"type":"string"},"meter_reading":{"description":"Meter Reading for Water","type":"integer","minimum":0}},"required":["id","power_on"]}}' http://locahost:9000/
 
 # Do some Validation
-
+	
+	curl -X POST -H "Content-Type: application/json" -d '{"device":{"name":"Test Device","power_on":"ON","meter_reading":10}}' http://localhost:9000/external/owners/test/devices
 	
