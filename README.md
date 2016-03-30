@@ -13,9 +13,9 @@ Project to create N-Schemas of JSON and validate them.
 * GIT
 * Apache CouchDB (Document JSON Store, you can change code to use CouchBase or PGSQL)
 
-  `git clone https://github.com/allnash/JEntity.git`
-
-	cd JEntity
+	`git clone https://github.com/allnash/JEntity.git`
+	
+	`cd JEntity`
 
 # Install Apache CouchDB
 
@@ -25,8 +25,9 @@ Create a Couch DB database
   password: password
 
 using the Web Console URL:
-  `http://127.0.0.1:5984/_utils/`
-on the right hand side in the coloumn look all the way to the bottom, there are two links sign up and login, Use Sign up and create an account. Or do the below, its easier)
+	`http://127.0.0.1:5984/_utils/`
+	
+On the right hand side in the coloumn look all the way to the bottom, there are two links sign up and login, Use Sign up and create an account. Or do the below, its easier)
 
 	export HOST="http://127.0.0.1:5984"
 	
