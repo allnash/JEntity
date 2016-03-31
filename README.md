@@ -45,8 +45,8 @@ Create database db-test in CouchDB and use the username and password above. Modi
 	./activator run
 
 Hit the Web console
-	
-	`http://localhost:9000`
+
+	http://localhost:9000
 
 For the first HTTP request it will pop up a red screen and ask you to run a SQL script and migrate the database.
 Don't worry, this will set up your database and seed it will all accounts, messages, notification, etc etc.   
