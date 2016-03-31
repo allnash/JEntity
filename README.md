@@ -61,7 +61,7 @@ In the command below we will add a new Type `device` in our System.
 
 	curl -X POST -H "Content-Type: application/json" -d '{"json_schema":{"title":"device","type":"object","properties":{"id":{"type":"string"},"power_on":{"type":"string"},"meter_reading":{"description":"Meter Reading for Water","type":"integer","minimum":0}},"required":["id","power_on"]}}' http://locahost:9000/
 
-# Do some Validation
+# Add Data, At the same time do Validation against Schema
 
 In the Following Example we create a test device, notice the data type of the JSON is `device`
 	
