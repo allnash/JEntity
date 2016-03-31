@@ -1,4 +1,4 @@
-J*Entity
+J* Entity
 ==================
 Project to create N-Schemas of JSON and validate them.
 
@@ -66,4 +66,3 @@ In the command below we will add a new Type `device` in our System.
 In the Following Example we create a test device, notice the data type of the JSON is `device`
 	
 	curl -X POST -H "Content-Type: application/json" -d '{"device":{"name":"Test Device","power_on":"ON","meter_reading":10}}' http://localhost:9000/external/owners/test/devices
-	
