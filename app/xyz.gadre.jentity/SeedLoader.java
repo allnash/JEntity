@@ -1,4 +1,4 @@
-package utils;
+package xyz.gadre.jentity;
 import xyz.gadre.jentity.models.JsonSchema;
 import play.Logger;
 
@@ -12,7 +12,7 @@ import java.util.Scanner;
 /**
  * Created by ngadre on 3/28/16.
  */
-public class Seeds {
+public class SeedLoader {
 
     public static void loadDefaultSchemas(){
 

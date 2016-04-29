@@ -1,11 +1,13 @@
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+
 import xyz.gadre.jentity.models.JsonDocument;
 import xyz.gadre.jentity.models.JsonSchema;
+import xyz.gadre.jentity.*;
+
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
-import utils.Seeds;
 
 public class Global extends GlobalSettings {
 
@@ -16,7 +18,7 @@ public class Global extends GlobalSettings {
 		// Load CACHED OBJECTS
 		//////////////////////////////////
         JsonSchema.reload();
-        Seeds.loadDefaultSchemas();
+        SeedLoader.loadDefaultSchemas();
         // Application start after this.
 		Logger.info("Application has started");
 

@@ -1,4 +1,4 @@
-package utils;
+package xyz.gadre.jentiy.utils;
 
 import java.util.Calendar;
 import java.util.Date;
