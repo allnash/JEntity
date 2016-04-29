@@ -1,7 +1,7 @@
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import models.JsonDocument;
-import models.JsonSchema;
+import xyz.gadre.jentity.models.JsonDocument;
+import xyz.gadre.jentity.models.JsonSchema;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;

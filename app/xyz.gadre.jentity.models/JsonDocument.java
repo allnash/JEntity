@@ -1,4 +1,4 @@
-package models;
+package xyz.gadre.jentity.models;
 
 import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -190,7 +190,7 @@ public class JsonDocument extends CouchModel{
 
     public static String getDeviceData(String deviceId)
 	{
-		JsonDocument state = (JsonDocument) CouchDB.find(JsonDocument.class,deviceId);
+		JsonDocument state = (JsonDocument) JsonDocument.find(JsonDocument.class,deviceId);
 		return null;
 
 	}

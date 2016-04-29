@@ -2,7 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.CaseFormat;
-import models.Owner;
+import xyz.gadre.jentity.models.Owner;
 import play.libs.Json;
 import play.mvc.Result;
 

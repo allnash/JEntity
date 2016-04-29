@@ -1,4 +1,4 @@
-package models;
+package xyz.gadre.jentity.models;
 
 /**
  * Created by ngadre on 2/23/16.

@@ -3,9 +3,9 @@ package factory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.JsonDocument;
-import models.JsonSchema;
-import models.Owner;
+import xyz.gadre.jentity.models.JsonDocument;
+import xyz.gadre.jentity.models.JsonSchema;
+import xyz.gadre.jentity.models.Owner;
 
 import java.util.Map;
 

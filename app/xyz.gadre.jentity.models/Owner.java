@@ -1,4 +1,4 @@
-package models;
+package xyz.gadre.jentity.models;
 
 import com.avaje.ebean.annotation.Index;
 import com.fasterxml.jackson.annotation.JsonInclude;

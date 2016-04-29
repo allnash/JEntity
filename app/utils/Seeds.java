@@ -1,5 +1,5 @@
 package utils;
-import models.JsonSchema;
+import xyz.gadre.jentity.models.JsonSchema;
 import play.Logger;
 
 import java.io.File;
