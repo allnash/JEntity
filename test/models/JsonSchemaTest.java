@@ -12,6 +12,7 @@ import play.Logger;
 import play.test.FakeApplication;
 import play.test.Helpers;
 import play.test.WithApplication;
+import xyz.gadre.jentity.models.JsonSchema;
 
 import java.util.ArrayList;
 import java.util.HashMap;

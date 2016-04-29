@@ -8,7 +8,6 @@ package xyz.gadre.jentity.models;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 

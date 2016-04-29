@@ -12,7 +12,7 @@ import java.util.Scanner;
 /**
  * Created by ngadre on 3/28/16.
  */
-public class SeedLoader {
+public class JsonSchemaLoader {
 
     public static void loadDefaultSchemas(){
 

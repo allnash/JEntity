@@ -18,7 +18,7 @@ public class Global extends GlobalSettings {
 		// Load CACHED OBJECTS
 		//////////////////////////////////
         JsonSchema.reload();
-        SeedLoader.loadDefaultSchemas();
+        JsonSchemaLoader.loadDefaultSchemas();
         // Application start after this.
 		Logger.info("Application has started");
 
