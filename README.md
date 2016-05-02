@@ -40,6 +40,10 @@ Create a new account by doing this.
 
 Create database db-test in CouchDB and use the username and password above. Modify conf/application.conf if you need to
 
+# Set up project
+
+        ./prepare_to_develop.sh
+
 # Start activator
 
 	./activator run
