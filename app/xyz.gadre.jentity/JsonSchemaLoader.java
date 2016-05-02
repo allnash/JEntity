@@ -26,8 +26,20 @@ public class JsonSchemaLoader {
                             try {
                                 String content = new Scanner(filePath.toFile()).useDelimiter("\\Z").next();
                                 JsonSchema j = new JsonSchema(content);
-                                j.save();
-                                Logger.info("Schema Loaded : " + filePath);
+                                JsonSchema exitingJsonSchema = JsonSchema.findByTitle(j.title);
+                                // Check if there is an existing schema, if not then add.
+                                if(exitingJsonSchema == null) {
+                                    j.save();
+                                    Logger.info("Schema Loaded : " + filePath);
+                                }
+                                else {
+                                    // Make sure existing schema is the same. If not then update and save.
+                                    if(!exitingJsonSchema.getString().equals(j.getString())){
+                                        exitingJsonSchema.setString(j.getString());
+                                        exitingJsonSchema.save();
+                                        Logger.info("Schema Updated : " + filePath);
+                                    }
+                                }
                             } catch (FileNotFoundException e) {
                                 Logger.warn("File not found : " + filePath.getFileName());
                             }
