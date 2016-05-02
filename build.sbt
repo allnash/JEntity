@@ -31,7 +31,7 @@ enablePlugins(JavaServerAppPackaging)
 
 inConfig(Test)(PlayEbean.scopedSettings)
 
-playEbeanModels in Test := Seq("models.*")
+playEbeanModels in Test := Seq("xyz.gadre.jentity.models.*")
 
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
