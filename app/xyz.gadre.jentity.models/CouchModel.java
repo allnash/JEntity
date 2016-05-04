@@ -17,15 +17,13 @@ public class CouchModel {
 
     public CouchModel(){
         if (dbClient == null){
-            configureDB();
+            Logger.error("Couch DB needs to be configured. Start by calling - CouchModel.configureDB(Config conf) ");
         }
     }
 
     public static CouchDbClient dbClient;
 
-    public static void configureDB(){
-
-        Config conf = ConfigFactory.load();
+    public static void configureDB(Config conf){
 
         CouchDbProperties properties = new CouchDbProperties()
                 .setDbName(conf.getString("couchdb.dbname"))
@@ -40,6 +38,7 @@ public class CouchModel {
 
         try{
             dbClient = new CouchDbClient(properties);
+            Logger.info("*** Couch DB has been configured ***");
         }
         catch(CouchDbException e){
             Logger.error("CouchDB - There was an error establishing a connection, please check");

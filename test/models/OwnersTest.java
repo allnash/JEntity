@@ -6,14 +6,17 @@ import com.typesafe.config.ConfigFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import play.test.FakeApplication;
-import play.test.Helpers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import play.Application;
+import play.Mode;
+import play.inject.guice.GuiceApplicationBuilder;
 import play.test.WithApplication;
 import xyz.gadre.jentity.models.JsonSchema;
 import xyz.gadre.jentity.models.Owner;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.UUID;
 
 
@@ -29,14 +32,22 @@ public class OwnersTest extends WithApplication {
     /**
      * Build a new fake application.
      */
-    public static FakeApplication fakeApplication() {
-        return new FakeApplication(new java.io.File("."), Helpers.class.getClassLoader(), new HashMap<String,Object>(), new ArrayList<String>(), null);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OwnersTest.class);
+
+    @Override
+    protected Application provideApplication()
+    {
+        return new GuiceApplicationBuilder().in(Mode.DEV)
+                .build();
     }
 
     @Override
-    protected FakeApplication provideFakeApplication() {
-        return fakeApplication();
+    public void startPlay()
+    {
+        super.startPlay();
+        // mock or otherwise provide a context
     }
+
 
     @Before
     public void setUp(){
