@@ -1,8 +1,10 @@
 package xyz.gadre.jentity.models;
 
 import com.fasterxml.jackson.annotation.*;
+import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.lightcouch.Attachment;
+import play.Logger;
 
 import java.util.*;
 
@@ -300,7 +302,7 @@ public class JsonDocument extends CouchModel{
 		}
 	} // end RevInfo
 
-    public static JsonDocument findById(String s) {
+    public static JsonDocument findById(String s) throws Exception {
         return (JsonDocument) CouchModel.findByIdAndObjectClass(s, JsonDocument.class);
     }
 
@@ -316,12 +318,28 @@ public class JsonDocument extends CouchModel{
 
 		if(this._rev == null){
             this.modified_at = System.currentTimeMillis() / 1000L;
+            Logger.info("Saving Document - " + this.getObject_type() + " - ID: " + this.get_id() );
             super.save();
 
         } else {
+            Logger.info("Updating Document - " + this.getObject_type() + " - ID: " + this.get_id() );
             super.updateDocument(this);
         }
 
     }
+
+	public static String jsonKeyNameForClass(Class c){
+		String className = c.getSimpleName();
+		className = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, className);
+		return className;
+	}
+
+	public static Owner isValidOwnerId(String ownerId){
+		Owner requestOwner = Owner.findById(ownerId);
+		if(requestOwner == null){
+			requestOwner = Owner.findByExternalId(ownerId);
+		}
+		return requestOwner;
+	}
 
 } // end Foo

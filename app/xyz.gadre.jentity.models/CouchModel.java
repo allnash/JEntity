@@ -7,7 +7,6 @@ package xyz.gadre.jentity.models;
 
 
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.lightcouch.*;
 import play.Logger;
 

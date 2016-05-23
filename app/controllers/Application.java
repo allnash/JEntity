@@ -9,7 +9,6 @@ import factory.OwnerDocumentFactory;
 import xyz.gadre.jentity.models.JsonDocument;
 import xyz.gadre.jentity.models.JsonSchema;
 import xyz.gadre.jentity.models.Owner;
-import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.json.JSONObject;
 import play.Logger;
